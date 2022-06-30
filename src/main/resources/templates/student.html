@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="common-head">
+    <title>Главная</title>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="#{name.student.list}">Список Студентов</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>Имя</td>
+            <td>Возвраст</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.id}">1</td>
+            <td th:text="${student.name}">Имя</td>
+            <td th:text="${student.age}">Возвраст</td>
+            <td><form method="post" th:action="@{${'/delete/' + student.id}}">
+                <button type="submit" class="btn btn-danger">x</button>
+            </form></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{'/add'}" class="btn btn-primary">Добавить</a>
+</div>
+</body>
+</html>
