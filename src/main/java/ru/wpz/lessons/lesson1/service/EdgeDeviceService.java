@@ -8,6 +8,10 @@ import ru.wpz.lessons.lesson1.entity.EdgeDevice;
 
 import java.util.List;
 
+/**
+ * Service for Device
+ */
+
 @Slf4j
 @AllArgsConstructor
 @Service

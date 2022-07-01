@@ -10,6 +10,9 @@ import ru.wpz.lessons.lesson1.service.EdgeDeviceService;
 
 import java.util.List;
 
+/**
+ * Rest controller for device
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/device")
