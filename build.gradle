@@ -25,6 +25,8 @@ dependencies {
     implementation 'org.apache.kafka:kafka-streams'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.0.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -33,6 +35,7 @@ dependencies {
     testImplementation 'org.springframework:spring-webflux'
     testImplementation 'org.springframework.graphql:spring-graphql-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
+
 }
 
 tasks.named('test') {
