@@ -1,5 +1,6 @@
 package ru.wpz.entity;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "wpz",name="message")
 @Data
+@ApiModel
 public class Message {
 
     @Id

@@ -14,19 +14,19 @@ public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
 
-    public List<Organization> getAllOrganization() {
+    public List<Organization> getAll() {
         return organizationRepository.findAll();
     }
 
-    public Optional<Organization> getOrganization(Long id){
+    public Optional<Organization> get(Long id){
         return organizationRepository.findById(id);
     }
 
-    public void saveOrganization(Organization organization) {
+    public void save(Organization organization) {
         organizationRepository.save(organization);
     }
 
-    public void deleteOrganization(Long id) {
+    public void delete(Long id) {
         organizationRepository.deleteById(id);
     }
 }

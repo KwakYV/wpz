@@ -14,19 +14,19 @@ public class ParkingService {
 
     private final ParkingRepository parkingRepository;
 
-    public List<Parking> getAllParking() {
+    public List<Parking> getAll() {
         return parkingRepository.findAll();
     }
 
-    public Optional<Parking> getParking(long id) {
+    public Optional<Parking> get(long id) {
         return  parkingRepository.findById(id);
     }
 
-    public void saveParking(Parking parking) {
+    public void save(Parking parking) {
         parkingRepository.save(parking);
     }
 
-    public void deleteParking(Long id) {
+    public void delete(Long id) {
         parkingRepository.deleteById(id);
     }
 }

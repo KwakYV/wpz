@@ -14,19 +14,19 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public List<Message> getAllMessage() {
+    public List<Message> getAll() {
         return messageRepository.findAll();
     }
 
-    public Optional<Message> getMessage(long id) {
+    public Optional<Message> get(long id) {
         return messageRepository.findById(id);
     }
 
-    public void saveMessage(Message message) {
+    public void save(Message message) {
         messageRepository.save(message);
     }
 
-    public void deleteMessage(Long id) {
+    public void delete(Long id) {
         messageRepository.deleteById(id);
     }
 }

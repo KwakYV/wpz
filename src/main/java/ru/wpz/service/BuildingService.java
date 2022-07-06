@@ -14,19 +14,19 @@ public class BuildingService {
 
     private final BuildingRepository buildingRepository;
 
-    public List<Building> getAllBuilding() {
+    public List<Building> getAll() {
         return buildingRepository.findAll();
     }
 
-    public Optional<Building> getBuilding(long id) {
+    public Optional<Building> get(long id) {
         return buildingRepository.findById(id);
     }
 
-    public void saveBuilding(Building building) {
+    public void save(Building building) {
         buildingRepository.save(building);
     }
 
-    public void deleteBuilding(Long id) {
+    public void delete(Long id) {
         buildingRepository.deleteById(id);
     }
 }

@@ -1,3 +1,7 @@
 server:
   port: 8189
-
+springfox:
+  documentation:
+    swagger:
+      v2:
+        enabled: true

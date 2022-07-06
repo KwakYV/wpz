@@ -14,19 +14,19 @@ public class DeviceService {
 
     private final DeviceRepository deviceRepository;
 
-    public List<Device> getAllDevice() {
+    public List<Device> getAll() {
         return deviceRepository.findAll();
     }
 
-    public Optional<Device> getDevice(long id) {
+    public Optional<Device> get(long id) {
         return deviceRepository.findById(id);
     }
 
-    public void saveDevice(Device device) {
+    public void save(Device device) {
         deviceRepository.save(device);
     }
 
-    public void deleteDevice(Long id) {
+    public void delete(Long id) {
         deviceRepository.deleteById(id);
     }
 }

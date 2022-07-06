@@ -1,5 +1,7 @@
 package ru.wpz.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -13,31 +15,36 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/organization")
 @AllArgsConstructor
+@Api(value = "organization", produces = "Контроллер для организаций")
 public class OrganizationController {
 
     private final OrganizationMapper organizationMapper;
     private final OrganizationService organizationService;
 
     @GetMapping()
-    public List<OrganizationDto> showAllOrganization(){
-        return organizationService.getAllOrganization().stream()
+    @ApiOperation("Получение всех организаций")
+    public List<OrganizationDto> showAll(){
+        return organizationService.getAll().stream()
                 .map(organizationMapper::mapOrganizationDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public OrganizationDto getOrganization(@PathVariable long id){
-        return organizationMapper.mapOrganizationDto(organizationService.getOrganization(id).orElse(null));
+    @ApiOperation("Поиск организации по id")
+    public OrganizationDto get(@PathVariable long id){
+        return organizationMapper.mapOrganizationDto(organizationService.get(id).orElse(null));
     }
 
     @PostMapping("/add")
     @Transactional
-    public OrganizationDto saveNewOrganization(@RequestBody OrganizationDto organization){
-        organizationService.saveOrganization(organizationMapper.mapOrganization(organization));
+    @ApiOperation("Сохранение новой организации")
+    public OrganizationDto save(@RequestBody OrganizationDto organization){
+        organizationService.save(organizationMapper.mapOrganization(organization));
         return organization;
     }
 
     @PostMapping("/delete/{id}")
-    public void deleteOrganization(@PathVariable Long id) {
-        organizationService.deleteOrganization(id);
+    @ApiOperation("Удаление организации по id")
+    public void delete(@PathVariable Long id) {
+        organizationService.delete(id);
     }
 }

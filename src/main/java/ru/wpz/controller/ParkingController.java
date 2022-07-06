@@ -1,5 +1,7 @@
 package ru.wpz.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -13,31 +15,36 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1//parking")
 @AllArgsConstructor
+@Api(value = "parking", produces = "Контроллер для парковок")
 public class ParkingController {
 
     private final ParkingMapper parkingMapper;
     private final ParkingService parkingService;
 
     @GetMapping()
-    public List<ParkingDto> showAllParking(){
-        return parkingService.getAllParking().stream()
+    @ApiOperation("Получение всех парковок")
+    public List<ParkingDto> showAll(){
+        return parkingService.getAll().stream()
                 .map(parkingMapper::mapParkingDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ParkingDto getParking(@PathVariable long id){
-        return parkingMapper.mapParkingDto(parkingService.getParking(id).orElse(null));
+    @ApiOperation("Поиск парковки по id")
+    public ParkingDto get(@PathVariable long id){
+        return parkingMapper.mapParkingDto(parkingService.get(id).orElse(null));
     }
 
     @PostMapping("/add")
     @Transactional
-    public ParkingDto saveNewParking(@RequestBody ParkingDto parking){
-        parkingService.saveParking(parkingMapper.mapParking(parking));
+    @ApiOperation("Сохранение новой парковки")
+    public ParkingDto save(@RequestBody ParkingDto parking){
+        parkingService.save(parkingMapper.mapParking(parking));
         return parking;
     }
 
     @PostMapping("/delete/{id}")
-    public void deleteParking(@PathVariable Long id) {
-        parkingService.deleteParking(id);
+    @ApiOperation("Удаление парковки по id")
+    public void delete(@PathVariable Long id) {
+        parkingService.delete(id);
     }
 }

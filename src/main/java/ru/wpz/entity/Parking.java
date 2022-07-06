@@ -1,5 +1,6 @@
 package ru.wpz.entity;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(schema = "wpz",name="parking")
 @Data
+@ApiModel
 public class Parking {
 
     @Id

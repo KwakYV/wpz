@@ -1,5 +1,7 @@
 package ru.wpz.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -13,32 +15,37 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1//message")
 @AllArgsConstructor
+@Api(value = "message", produces = "Контроллер для сообщений")
 public class MessageController {
 
     private final MessageMapper messageMapper;
     private final MessageService messageService;
 
     @GetMapping()
-    public List<MessageDto> showAllOrganization(){
-        return messageService.getAllMessage().stream()
+    @ApiOperation("Получение всех сообщений")
+    public List<MessageDto> showAll(){
+        return messageService.getAll().stream()
                 .map(messageMapper::mapMessageDto).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public MessageDto getMessage(@PathVariable long id){
-        return messageMapper.mapMessageDto(messageService.getMessage(id).orElse(null));
+    @ApiOperation("Поиск сообщения по id")
+    public MessageDto get(@PathVariable long id){
+        return messageMapper.mapMessageDto(messageService.get(id).orElse(null));
     }
 
     @PostMapping("/add")
     @Transactional
-    public MessageDto saveNewMessage(@RequestBody MessageDto message){
-        messageService.saveMessage(messageMapper.mapMessage(message));
+    @ApiOperation("Сохранение нового сообщения")
+    public MessageDto save(@RequestBody MessageDto message){
+        messageService.save(messageMapper.mapMessage(message));
         return message;
     }
 
     @PostMapping("/delete/{id}")
-    public void deleteMessage(@PathVariable Long id) {
-        messageService.deleteMessage(id);
+    @ApiOperation("Удаление сообщения по id")
+    public void delete(@PathVariable Long id) {
+        messageService.delete(id);
     }
 
 }
