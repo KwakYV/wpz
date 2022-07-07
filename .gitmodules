@@ -1,0 +1,3 @@
+[submodule "wpz-db"]
+	path = wpz-db
+	url = git@github.com:KwakYV/wpz-db.git
