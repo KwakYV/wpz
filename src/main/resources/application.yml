@@ -1,0 +1,7 @@
+server:
+  port: 8484
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:2345/wpz
+    username: wpz
+    password: wpz
