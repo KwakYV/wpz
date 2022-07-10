@@ -3,7 +3,6 @@ package ru.wpz.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.BuildingDto;
 import ru.wpz.mapper.BuildingMapper;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1//building")
+@RequestMapping("/api/v1/building")
 @AllArgsConstructor
 @Api(value = "building", produces = "Контроллер для объектов")
 public class BuildingController {
@@ -34,15 +33,13 @@ public class BuildingController {
         return buildingMapper.mapBuildingDto(buildingService.get(id).orElse(null));
     }
 
-    @PostMapping("/add")
-    @Transactional
+    @PostMapping
     @ApiOperation("Сохранение нового объекта")
-    public BuildingDto save(@RequestBody BuildingDto building){
+    public void save(@RequestBody BuildingDto building){
         buildingService.save(buildingMapper.mapBuilding(building));
-        return building;
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ApiOperation("Удаление объекта по id")
     public void delete(@PathVariable Long id) {
         buildingService.delete(id);
