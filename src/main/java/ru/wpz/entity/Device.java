@@ -24,6 +24,6 @@ public class Device {
     @JoinColumn(name = "zoneNumber")
     private Parking zoneId;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "devId")
     private List<Message> messages;
 }
