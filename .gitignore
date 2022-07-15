@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Node modules ###
+/wpz-front/node_modules
