@@ -27,8 +27,6 @@ public class KafkaHelper {
     @Autowired
     private KafkaProducer<String, String> producer;
 
-    @Autowired
-    private KafkaConsumerFactory consumerFactory;
     private final ObjectMapper notFailedOnIgnoredObjectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 
     public void sendTo(KafkaTopic topic, String msg){
@@ -43,6 +41,8 @@ public class KafkaHelper {
         producer.flush();
     }
 
+
+    //метод для слушателя будет далее переделан в зависимости от логики
     @KafkaListener(topics = "test", groupId = "wpz")
     public void consume(String message){
         Organization organization = null;
