@@ -13,4 +13,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query("FROM Message m WHERE m.devId = devId")
     List<Message> findAll(@Param("devId") long devId);
+
+    Message getMessageBy(Message message);
 }
