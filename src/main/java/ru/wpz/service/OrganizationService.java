@@ -2,6 +2,7 @@ package ru.wpz.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.wpz.entity.Organization;
 import ru.wpz.repository.OrganizationRepository;
 
@@ -22,6 +23,7 @@ public class OrganizationService {
         return organizationRepository.findById(id);
     }
 
+    @Transactional
     public void save(Organization organization) {
         organizationRepository.save(organization);
     }

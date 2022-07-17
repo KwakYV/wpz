@@ -18,7 +18,7 @@ public class Message {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "dev_id")
     private Device devId;
 
     @Column(name = "status")

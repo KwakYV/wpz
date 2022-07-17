@@ -23,6 +23,6 @@ public class Organization {
     @Column(name = "desc")
     private String desc;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "organization")
     private List<Building> buildings;
 }

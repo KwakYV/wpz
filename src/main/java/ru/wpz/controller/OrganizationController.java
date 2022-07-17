@@ -3,7 +3,6 @@ package ru.wpz.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.OrganizationDto;
 import ru.wpz.mapper.OrganizationMapper;
@@ -34,15 +33,13 @@ public class OrganizationController {
         return organizationMapper.mapOrganizationDto(organizationService.get(id).orElse(null));
     }
 
-    @PostMapping("/add")
-    @Transactional
+    @PostMapping
     @ApiOperation("Сохранение новой организации")
-    public OrganizationDto save(@RequestBody OrganizationDto organization){
+    public void save(@RequestBody OrganizationDto organization){
         organizationService.save(organizationMapper.mapOrganization(organization));
-        return organization;
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ApiOperation("Удаление организации по id")
     public void delete(@PathVariable Long id) {
         organizationService.delete(id);

@@ -27,6 +27,6 @@ public class Building {
     @JoinColumn(name = "org_id")
     private Organization organization;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "building")
     private List<Parking> parking;
 }

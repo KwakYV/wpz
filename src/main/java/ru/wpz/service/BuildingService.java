@@ -2,6 +2,7 @@ package ru.wpz.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.wpz.entity.Building;
 import ru.wpz.repository.BuildingRepository;
 
@@ -22,6 +23,7 @@ public class BuildingService {
         return buildingRepository.findById(id);
     }
 
+    @Transactional
     public void save(Building building) {
         buildingRepository.save(building);
     }
