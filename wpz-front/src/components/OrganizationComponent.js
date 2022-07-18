@@ -1,6 +1,14 @@
 import React from "react";
 import Form from 'react-bootstrap/Form';
 
+// *******************
+//Это должно быть переписано на вызов REST API
+const jsonString = "[{\"id\": 1, \"orgName\": \"Ashan\", \"desc\": \"Сеть\"}," +
+    "{\"id\": 2, \"orgName\": \"X5 Retail\", \"desc\": \"Сеть\"}," +
+    "{\"id\": 3, \"orgName\": \"Mega\", \"desc\": \"Сеть\"}" +
+    "]";
+const organizationList = JSON.parse(jsonString);
+// *******************
 
 class OrganizationList extends React.Component{
     constructor(props) {
@@ -15,10 +23,13 @@ class OrganizationList extends React.Component{
     render() {
         return (
             <Form.Select aria-label="Default select example" onChange={this.handleChange}>
-                <option>Select organization</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option>Выберите организацию</option>
+                {
+                    organizationList.map((item) => {
+                        let itemKey = String(item.id) + "$$" + item.orgName;
+                        return <option key={item.id} value={itemKey}>{item.orgName}</option>
+                    })
+                }
             </Form.Select>
         );
     }
