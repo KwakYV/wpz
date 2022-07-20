@@ -12,7 +12,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<MessageDto> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, MessageDto messageDto)  {
-        ctx.writeAndFlush(messageDto)ж
+        ctx.writeAndFlush(messageDto);
     }
 
     @Override
