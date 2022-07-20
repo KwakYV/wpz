@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.wpz.dto.MessageDto;
 import ru.wpz.entity.Message;
 import ru.wpz.mapper.MessageMapper;
-import ru.wpz.nio_server.NettyNetwork;
 import ru.wpz.repository.MessageRepository;
 
 import java.util.List;
@@ -18,7 +17,6 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final MessageMapper messageMapper;
-    private final NettyNetwork nettyNetwork;
 
     public List<Message> findAll(long devId) {
         return messageRepository.findAll(devId);
@@ -29,8 +27,8 @@ public class MessageService {
     }
 
     @Transactional
-    public void save(Message message) {
-        messageRepository.save(message);
+    public Message save(Message message) {
+       return messageRepository.save(message);
     }
 
     public void delete(Long id) {
@@ -38,10 +36,8 @@ public class MessageService {
     }
 
     public void saveFromKafka(MessageDto messageDto) {
-        Message message = messageMapper.mapMessage(messageDto);
-        save(message);
+        Message message = save(messageMapper.mapMessage(messageDto));
         messageDto = messageMapper.mapMessageDto(messageRepository.getMessageBy(message));
-        nettyNetwork.writeMessage(messageDto);
     }
 }
 
