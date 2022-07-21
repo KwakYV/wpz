@@ -10,6 +10,7 @@ import ru.wpz.dto.ReportPeriodDto;
 import ru.wpz.service.ReportService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -22,22 +23,20 @@ public class ReportController {
 
     @GetMapping("/organization/{id}")
     @ApiOperation("Получение отчетов занятых парковочных мест по организациям в данный момент")
-    public ReportMomentDto showDevOrg(@PathVariable long id){
+    public ReportMomentDto showDevOrg(@PathVariable long id) {
         return reportService.findDevOrg(id);
     }
 
 
     @PostMapping("/organization/day")
     @ApiOperation("Получение отчетов занятых парковочных мест по организациям в указанный день")
-    public DayReportDto dayDevOrg(@RequestBody long id, @RequestBody LocalDateTime day){
+    public List<DayReportDto> dayDevOrg(@RequestBody long id, @RequestBody LocalDateTime day) {
         return reportService.findDayDevOrg(id, day);
     }
 
     @PostMapping("/organization/period")
     @ApiOperation("Получение отчетов занятых парковочных мест по организациям в указанный период времени")
-    public ReportPeriodDto periodDevOrg(@RequestBody long id, @RequestBody LocalDateTime start, @RequestBody LocalDateTime end){
+    public ReportPeriodDto periodDevOrg(@RequestBody long id, @RequestBody LocalDateTime start, @RequestBody LocalDateTime end) {
         return reportService.findPeriod(id, start, end);
     }
-
-
 }
