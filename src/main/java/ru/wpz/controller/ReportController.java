@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.DayReportDto;
 import ru.wpz.dto.ReportMomentDto;
+import ru.wpz.dto.ReportPeriodDto;
 import ru.wpz.service.ReportService;
 
 import java.time.LocalDateTime;
@@ -31,11 +32,12 @@ public class ReportController {
     public DayReportDto dayDevOrg(@RequestBody long id, @RequestBody LocalDateTime day){
         return reportService.findDayDevOrg(id, day);
     }
-//
-//    @GetMapping()
-//    @ApiOperation("Получение отчетов занятых парковочных мест по объектам в данный момент")
-//    public DayReportDto dayDevBuild(@PathVariable long id){
-//        return null;
-//    }
+
+    @PostMapping("/organization/period")
+    @ApiOperation("Получение отчетов занятых парковочных мест по организациям в указанный период времени")
+    public ReportPeriodDto periodDevOrg(@RequestBody long id, @RequestBody LocalDateTime start, @RequestBody LocalDateTime end){
+        return reportService.findPeriod(id, start, end);
+    }
+
 
 }

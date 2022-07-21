@@ -9,7 +9,6 @@ import ru.wpz.entity.Message;
 import ru.wpz.mapper.MessageMapper;
 import ru.wpz.repository.DeviceRepository;
 import ru.wpz.repository.MessageRepository;
-import ru.wpz.repository.ReportRepository;
 
 import java.util.List;
 import java.util.Optional;
