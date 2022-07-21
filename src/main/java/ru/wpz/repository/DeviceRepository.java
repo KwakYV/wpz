@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface DeviceRepository extends JpaRepository<Device, Long> {
 
-    @Query("FROM Device d WHERE d.zoneId = zoneId")
+    @Query("FROM Device  d WHERE d.zoneId = :zoneId")
     List<Device> findAll(@Param("zoneId") int zoneId);
 }

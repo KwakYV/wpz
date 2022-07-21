@@ -29,8 +29,8 @@ public class MessageService {
     }
 
     @Transactional
-    public void save(Message message) {
-        messageRepository.save(message);
+    public Message save(Message message) {
+        return messageRepository.save(message);
     }
 
     public void delete(Long id) {
@@ -39,9 +39,11 @@ public class MessageService {
 
     public void saveFromKafka(MessageDto messageDto) {
         Message message = messageMapper.mapMessage(messageDto);
-        save(message);
-        messageDto = messageMapper.mapMessageDto(messageRepository.getMessageBy(message));
-        nettyNetwork.writeMessage(messageDto);
+        Message updatedMessage = save(message);
+        /**
+         * Netty client sends kafka message
+         */
+//        nettyNetwork.writeMessage(messageMapper.mapMessageDto(updatedMessage));
     }
 }
 
