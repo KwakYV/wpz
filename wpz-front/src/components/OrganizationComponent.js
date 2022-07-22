@@ -2,19 +2,25 @@ import React from "react";
 import Form from 'react-bootstrap/Form';
 
 
-// *******************
-//Это должно быть переписано на вызов REST API
-const jsonString = "[{\"id\": 1, \"orgName\": \"Ashan\", \"desc\": \"Сеть\"}," +
-    "{\"id\": 2, \"orgName\": \"X5 Retail\", \"desc\": \"Сеть\"}," +
-    "{\"id\": 3, \"orgName\": \"Mega\", \"desc\": \"Сеть\"}" +
-    "]";
-const organizationList = JSON.parse(jsonString);
-// *******************
+
 
 class OrganizationList extends React.Component{
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            orgList:[]
+        }
+
+
+    }
+
+    componentDidMount() {
+        const apiUrl = "http://localhost:8185/api/v1/organization";
+        fetch(apiUrl, {method: 'get', mode:'cors'}
+        )
+            .then((response) => response.json())
+            .then((data) => this.setState({orgList:data}));
     }
 
     handleChange(e) {
@@ -22,12 +28,13 @@ class OrganizationList extends React.Component{
     }
 
     render() {
+
         return (
             <Form.Select aria-label="Default select example" onChange={this.handleChange}>
 
                 <option>Выберите организацию</option>
                 {
-                    organizationList.map((item) => {
+                    this.state.orgList.map((item) => {
                         let itemKey = String(item.id) + "$$" + item.orgName;
                         return <option key={item.id} value={itemKey}>{item.orgName}</option>
                     })
