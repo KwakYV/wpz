@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class NettyConfig {
 
     @Bean
-    public NettyNetwork nettyNetwork(){
-        return new NettyNetwork();
+    public WebSocketServer nettyNetwork(){
+        return new WebSocketServer(8189);
     }
 }
