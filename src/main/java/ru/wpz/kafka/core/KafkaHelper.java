@@ -3,6 +3,7 @@ package ru.wpz.kafka.core;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -11,20 +12,21 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import ru.wpz.dto.MessageDto;
 import ru.wpz.entity.Organization;
 import ru.wpz.kafka.KafkaTopic;
+import ru.wpz.mapper.MessageMapper;
+import ru.wpz.service.MessageService;
 import ru.wpz.service.OrganizationService;
 
 
 @Component
 @Slf4j
 @Setter
+@AllArgsConstructor
 public class KafkaHelper {
 
-    @Autowired
-    OrganizationService organizationService;
-
-    @Autowired
+    private final MessageService messageService;
     private KafkaProducer<String, String> producer;
 
     private final ObjectMapper notFailedOnIgnoredObjectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
@@ -45,12 +47,12 @@ public class KafkaHelper {
     //метод для слушателя будет далее переделан в зависимости от логики
     @KafkaListener(topics = "test", groupId = "wpz")
     public void consume(String message){
-        Organization organization = null;
+        MessageDto messageDto = null;
         try {
-            organization = notFailedOnIgnoredObjectMapper.readValue(message, Organization.class);
+            messageDto = notFailedOnIgnoredObjectMapper.readValue(message, MessageDto.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        organizationService.save(organization);
+        messageService.saveFromKafka(messageDto);
     }
 }
