@@ -8,6 +8,6 @@ public class NettyConfig {
 
     @Bean
     public WebSocketServer nettyNetwork(){
-        return new WebSocketServer();
+        return new WebSocketServer(8189);
     }
 }

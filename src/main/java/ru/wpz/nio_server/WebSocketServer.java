@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebSocketServer {
 
-    public WebSocketServer() {
+    public WebSocketServer(int port) {
         EventLoopGroup auth = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();
         try {
@@ -19,7 +19,7 @@ public class WebSocketServer {
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new WebSocketChannelInitializer());
 
-            ChannelFuture channelFuture = serverBootstrap.bind(8189).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
             log.debug("WebSocketServer started...");
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
