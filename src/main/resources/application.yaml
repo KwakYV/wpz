@@ -9,6 +9,7 @@ springfox:
 
 spring:
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:2345/wpz
     username: wpz_user
     password: wpz_password
