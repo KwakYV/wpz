@@ -1,7 +1,14 @@
 server:
-  port: 8189
+  port: 8185
+
 springfox:
   documentation:
     swagger:
       v2:
         enabled: true
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:2345/wpz
+    username: wpz_user
+    password: wpz_password
