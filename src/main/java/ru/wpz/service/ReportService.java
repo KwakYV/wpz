@@ -10,7 +10,6 @@ import ru.wpz.entity.*;
 import ru.wpz.model.DeviceBusyTime;
 import ru.wpz.model.DeviceNumber;
 import ru.wpz.model.ReportMoment;
-import ru.wpz.repository.DeviceRepository;
 import ru.wpz.repository.OrganizationRepository;
 import ru.wpz.repository.ReportRepository;
 

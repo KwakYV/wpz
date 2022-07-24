@@ -3,8 +3,11 @@ package ru.wpz.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.MessageDto;
+import ru.wpz.entity.Message;
 import ru.wpz.mapper.MessageMapper;
 import ru.wpz.service.MessageService;
 
@@ -44,5 +47,12 @@ public class MessageController {
     public void delete(@PathVariable Long id) {
         messageService.delete(id);
     }
+
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message change(Message message) throws Exception {
+        return message;
+    }
+
 
 }
