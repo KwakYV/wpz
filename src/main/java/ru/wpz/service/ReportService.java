@@ -9,9 +9,7 @@ import ru.wpz.dto.ReportPeriodDto;
 import ru.wpz.entity.*;
 import ru.wpz.model.DeviceBusyTime;
 import ru.wpz.model.DeviceNumber;
-import ru.wpz.model.ReportMoment;
 import ru.wpz.repository.OrganizationRepository;
-import ru.wpz.repository.ReportRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,27 +21,12 @@ import java.util.*;
 @AllArgsConstructor
 public class ReportService {
 
-    private final ReportRepository reportRepository;
     private final OrganizationRepository organizationRepository;
     private final ReportDao reportDao;
 
-    // после получения нового message создаем отчет
-    public void createReport(Device device, Message message) {
-        Report report = new Report();
-        report.setTimeMessage(message.getCreatedDt());
-        report.setStatus(message.getStatus());
-        report.setDevice(device);
-        report.setZoneId(device.getZoneId());
-        report.setBuilding(device.getZoneId().getBuilding());
-        report.setOrganizationId(device.getZoneId().getBuilding().getOrganization());
-        reportRepository.save(report);
-    }
-
     // получаем отчет о занатых и свободных парковочных местах в данный момент
     public ReportMomentDto findDevOrg(long id) {
-        Organization organization = organizationRepository.findById(id).orElse(null);
-        List<ReportMoment> momentSet = getListDevice(organization);
-        return createReportMoment(momentSet);
+        return getListReportMoment(id);
     }
 
     // получаем отчет о занатых и свободных парковочных местах в указанный день и формируем DTO для фронта
@@ -81,16 +64,9 @@ public class ReportService {
     для метода получаешего отчет о занатых и свободных парковочных местах в данный момент
     получаем список всех датчиков и их актуальные статусы
      */
-    private List<ReportMoment> getListDevice(Organization org) {
-        List<ReportMoment> reportList = new ArrayList<>();
-        if (org != null) {
-            for (Building building : org.getBuildings()) {
-                for (Parking parking : building.getParking()) {
-                    reportList.addAll(reportDao.findReportMoment(parking.getZoneNumber()));
-                }
-            }
-        }
-        return reportList;
+    private ReportMomentDto getListReportMoment(long id) {
+        List<ReportMomentDto> reportList = reportDao.findReportMoment(id);
+        return reportList.get(0);
     }
 
     /*
@@ -108,20 +84,6 @@ public class ReportService {
             }
         }
         return reportList;
-    }
-
-    /*
-    для метода получаещего отчет о занатых и свободных парковочных местах в данный момент
-    подсчитываем общее кол-во датчиков, кол-во занатых и свободных парковок, процент заполнение парковки
-    формируем DTO для фронта
-     */
-    private ReportMomentDto createReportMoment(List<ReportMoment> list) {
-        ReportMomentDto reportMomentDto = new ReportMomentDto();
-        reportMomentDto.setTotal(list.size());
-        reportMomentDto.setStatusTaken((int) list.stream().filter(report -> report.getStatus() == 1).count());
-        reportMomentDto.setStatusFree((int) list.stream().filter(report -> report.getStatus() == 0).count());
-        reportMomentDto.setPercent((double) Math.floorDiv(reportMomentDto.getStatusTaken() * 100, reportMomentDto.getTotal()));
-        return reportMomentDto;
     }
 
     private ReportPeriodDto findReportPeriod(List<DeviceBusyTime> deviceBusyTimes, int totalDevice){
