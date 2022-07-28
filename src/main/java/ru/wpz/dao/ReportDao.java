@@ -19,8 +19,8 @@ public class ReportDao {
 
     private final RowMapper<ReportMomentDto> REPORT_MOMENT_DTO = (ResultSet resultSet, int rowNun) ->
             ReportMomentDto.builder().total(resultSet.getInt("total"))
-                    .statusTaken(resultSet.getInt("status_taken"))
-                    .statusFree(resultSet.getInt("status_free"))
+                    .statusTaken(resultSet.getInt("busy_count"))
+                    .statusFree(resultSet.getInt("free_count"))
                     .percent(resultSet.getFloat("percent"))
             .build();
 
@@ -34,32 +34,24 @@ public class ReportDao {
                     .build();
 
     public List<ReportMomentDto> findReportMoment(long id){
-        return jdbcTemplate.query("with result as" +
-                "(select count(a.dev_number) as dev_number, count(a.status) as status_taken, 0 as status_free from organization o" +
-                "inner join building b on o.id = b.org_id" +
-                "inner join parking p on b.id = p.obj_id" +
-                "inner join " +
-                "(select t.dev_number, t.max_dt, t.status, t.zone_id " +
-                "from(select d.zone_id, d.dev_number, max(m.created_dt) over (partition by d.id) max_dt," +
-                "m.status, m.created_dt from device d join message m on d.id = m.dev_id ) t " +
-                "where t.created_dt = t.max_dt and t.status  =1) a" +
-                "on p.zone_number = a.zone_id" +
-                "where o.id = " + id + " " +
-                "union all" +
-                "select count(a.dev_number) as dev_number, count(a.status) as status_taken, 0 as status_free from organization o" +
-                "inner join building b on o.id = b.org_id" +
-                "inner join parking p on b.id = p.obj_id" +
-                "inner join " +
-                "(select count(s.dev_number) as dev_number, 0 as status_taken, count(s.status) as status_free" +
-                "from(select d.dev_number, max(m.created_dt) over (partition by d.id) max_dt, m.status, m.created_dt " +
-                "from device d join message m on d.id = m.dev_id where d.zone_id = 1) s " +
-                "where s.created_dt = s.max_dt and s.status  = 0) a" +
-                "on p.zone_number = a.zone_id" +
-                "where o.id = )" + id + " " +
-                "select sum(r.dev_number) as total, sum(r.status_taken) as status_taken, " +
-                "sum(r.status_free) as status_free, " +
-                "cast(sum(r.status_taken) * 100 as float)/  cast(sum(r.dev_number) as float) as percent" +
-                "from result r", REPORT_MOMENT_DTO);
+        return jdbcTemplate.query("with res as(" +
+                "select sum(tab.cnt_devices) as total," +
+                "cast(split_part(string_agg(cast(tab.cnt_devices as varchar), ':'), ':', 1) as int) as free_count," +
+                "cast(split_part(string_agg(cast(tab.cnt_devices as varchar), ':'), ':', 2) as int) as busy_count" +
+                "from (select count(t.dev_number) cnt_devices, coalesce(t.status, 0) as status" +
+                "from (select d.id, d.dev_number, max(m.created_dt) over (partition by d.id) max_dt, m.status, m.created_dt" +
+                "from device d" +
+                "join parking p on p.id = d.zone_id" +
+                "join building b on b.id = p.obj_id" +
+                "left join message m on d.id = m.dev_id" +
+                "where b.id = " + id + " ) t where t.created_dt = t.max_dt or t.max_dt is null" +
+                "group by t.status" +
+                "order by t.status) tab)" +
+                "select r.total," +
+                "r.busy_count," +
+                "r.free_count," +
+                "cast(r.busy_count * 100 as float)/  cast(r.total as float) as percent" +
+                "from res r;", REPORT_MOMENT_DTO);
     }
 
     public List<DeviceBusyTime> findDeviceBusyTime(int device, LocalDateTime start, LocalDateTime end){
