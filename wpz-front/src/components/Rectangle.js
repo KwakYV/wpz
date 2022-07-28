@@ -3,6 +3,7 @@ import {Layer, Rect, Stage} from "react-konva";
 
 
 const Rectangle = (props) => {
+
     function generateRectangle() {
 
         return props.devices.map((device) => (
@@ -22,12 +23,19 @@ const Rectangle = (props) => {
 
     const init_state = generateRectangle();
     const [rects, setRects] = useState([]);
+
     useEffect(()=>{
-        function setUpdate() {
-            setRects(init_state);
-        }
-        setUpdate();
-    }, [init_state.length]);
+        const interval = setInterval(
+            () => {
+                setRects(init_state);
+            }, 10000
+        );
+        return () => clearInterval(interval);
+        // function setUpdate() {
+        //     setRects(init_state);
+        // }
+        // setUpdate();
+    });
 
 
 
