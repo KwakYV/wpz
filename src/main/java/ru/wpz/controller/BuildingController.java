@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/building")
 @AllArgsConstructor
 @Api(value = "building", produces = "Контроллер для объектов")
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 public class BuildingController {
 
     private final BuildingMapper buildingMapper;
@@ -31,6 +32,14 @@ public class BuildingController {
     @ApiOperation("Поиск объекта по id")
     public BuildingDto get(@PathVariable long id){
         return buildingMapper.mapBuildingDto(buildingService.get(id).orElse(null));
+    }
+
+    @GetMapping("/org/{orgId}")
+    @ApiOperation("Получение списка объектов по организации")
+    public List<BuildingDto> findAllByOrg(@PathVariable(name="orgId") Long orgId) {
+        return buildingService.getByOrg(orgId).stream()
+                .map(buildingMapper::mapBuildingDto).collect(Collectors.toList());
+
     }
 
     @PostMapping

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/organization")
 @AllArgsConstructor
 @Api(value = "organization", produces = "Контроллер для организаций")
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 public class OrganizationController {
 
     private final OrganizationMapper organizationMapper;

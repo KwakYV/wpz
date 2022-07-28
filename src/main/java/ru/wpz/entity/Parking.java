@@ -22,7 +22,6 @@ public class Parking {
     @Column(name = "zone_number")
     private Integer zoneNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "obj_id")
-    private Building building;
+    @Column(name = "obj_id")
+    private Long building;
 }

@@ -31,4 +31,8 @@ public class ParkingService {
     public void delete(Long id) {
         parkingRepository.deleteById(id);
     }
+
+    public Optional<Parking> getByBuildingId(Long id) {
+        return parkingRepository.findParkingByBuilding(id);
+    }
 }

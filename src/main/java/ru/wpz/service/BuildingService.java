@@ -19,6 +19,10 @@ public class BuildingService {
         return buildingRepository.findAll();
     }
 
+    public List<Building> getByOrg(Long orgId){
+        return buildingRepository.getBuildingByOrgId(orgId);
+    }
+
     public Optional<Building> get(long id) {
         return buildingRepository.findById(id);
     }
