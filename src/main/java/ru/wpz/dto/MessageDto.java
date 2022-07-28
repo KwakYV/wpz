@@ -12,5 +12,5 @@ public class MessageDto {
     private Long id;
     private Long devId;
     private Integer status;
-    private LocalDateTime createdDt;
+    private LocalDateTime createdDt = LocalDateTime.now();
 }

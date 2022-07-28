@@ -10,5 +10,6 @@ public class ParkingDto {
     private Long id;
     private String schemaPath;
     private Integer zoneNumber;
+    private Long building;
 
 }

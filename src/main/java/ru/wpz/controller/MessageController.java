@@ -3,11 +3,8 @@ package ru.wpz.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.MessageDto;
-import ru.wpz.entity.Message;
 import ru.wpz.mapper.MessageMapper;
 import ru.wpz.service.MessageService;
 
@@ -25,16 +22,12 @@ public class MessageController {
 
     @GetMapping("/{devId}")
     @ApiOperation("Получение всех сообщений для датчика")
-    public List<MessageDto> showAll(@PathVariable long devId){
+    public List<MessageDto> showAll(@PathVariable(name="devId") Long devId){
         return messageService.findAll(devId).stream()
                 .map(messageMapper::mapMessageDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation("Поиск сообщения по id")
-    public MessageDto get(@PathVariable long id){
-        return messageMapper.mapMessageDto(messageService.get(id).orElse(null));
-    }
+
 
     @PostMapping
     @ApiOperation("Сохранение нового сообщения")
@@ -47,12 +40,5 @@ public class MessageController {
     public void delete(@PathVariable Long id) {
         messageService.delete(id);
     }
-
-    @MessageMapping("/changeMessage")
-    @SendTo("/topic/activity")
-    public Message change(Message message) throws Exception {
-        return message;
-    }
-
 
 }

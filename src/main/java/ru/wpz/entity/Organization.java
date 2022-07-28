@@ -20,9 +20,7 @@ public class Organization {
     @Column(name = "org_name")
     private String orgName;
 
-    @Column(name = "desc")
+    @Column(name = "org_desc")
     private String desc;
 
-    @OneToMany(mappedBy = "organization")
-    private List<Building> buildings;
 }

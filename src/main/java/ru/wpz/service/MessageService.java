@@ -49,6 +49,7 @@ public class MessageService {
         }
     }
 
+    //TODO: Пересмотреть логику данного метода => на вход должен быть один объект с полной информацией
     private void createReport(Device device, Message message) {
         Report report = new Report();
         report.setTimeMessage(message.getCreatedDt());
