@@ -22,7 +22,7 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("/organization/{id}")
-    @ApiOperation("Получение отчетов занятых парковочных мест по организациям в данный момент")
+    @ApiOperation("Получение отчетов занятых парковочных мест по объектам в данный момент")
     public ReportMomentDto showDevOrg(@PathVariable long id) {
         return reportService.findDevOrg(id);
     }
