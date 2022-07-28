@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.DayReportDto;
+import ru.wpz.dto.ReportMomentDto;
 import ru.wpz.dto.ReportPeriodDto;
 import ru.wpz.service.ReportService;
 
@@ -21,7 +22,7 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("/organization/{id}")
-    @ApiOperation("Получение отчетов занятых парковочных мест по организациям в данный момент")
+    @ApiOperation("Получение отчетов занятых парковочных мест по объектам в данный момент")
     public ReportMomentDto showDevOrg(@PathVariable long id) {
         return reportService.findDevOrg(id);
     }
