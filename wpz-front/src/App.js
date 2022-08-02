@@ -9,13 +9,18 @@ class App extends React.Component{
         super(props);
         this.state = {
             organization: "",
-            object: "",
+            objects: [],
         }
         this.handleOrganizationSelect = this.handleOrganizationSelect.bind(this);
     }
 
     handleOrganizationSelect(organization) {
         this.setState({organization:organization});
+        const orgId = getValueFromConcatString(organization, "$$", 0);
+        const baseUrl = "http://localhost:8185/api/v1/building";
+        fetch(baseUrl + "/org/" + orgId, {method: 'get', mode:'cors'})
+            .then((response) => response.json())
+            .then((data) => this.setState({objects:data}));
     }
 
     render() {
@@ -28,7 +33,7 @@ class App extends React.Component{
                 <br />
                 <hr />
                 <h1>{getValueFromConcatString(this.state.organization, "$$", 1)}</h1>
-                <ObjectsTabs />
+                <ObjectsTabs objects={this.state.objects}/>
 
             </div>
         );

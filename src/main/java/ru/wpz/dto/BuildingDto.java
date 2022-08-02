@@ -10,4 +10,5 @@ public class BuildingDto {
     private Long id;
     private String name;
     private String desc;
+    private Long orgId;
 }

@@ -1,6 +1,7 @@
 package ru.wpz.entity;
 
 import io.swagger.annotations.ApiModel;
+import jdk.jfr.Timestamp;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,9 +18,8 @@ public class Message {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "dev_id")
-    private Device devId;
+    @Column(name = "dev_id")
+    private Long devId;
 
     @Column(name = "status")
     private Integer status;

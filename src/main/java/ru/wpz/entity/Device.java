@@ -20,10 +20,14 @@ public class Device {
     @Column(name = "dev_number")
     private Integer devNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "zoneNumber")
-    private Parking zoneId;
+    @Column(name = "zone_id")
+    private Long zoneId;
 
-    @OneToMany(mappedBy = "devId")
-    private List<Message> messages;
+    @Column(name="x_coord")
+    private int xCor;
+
+    @Column(name="y_coord")
+    private int yCor;
+
+
 }

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/parking")
 @AllArgsConstructor
 @Api(value = "parking", produces = "Контроллер для парковок")
+@CrossOrigin(origins = "http://127.0.0.1:3000")
 public class ParkingController {
 
     private final ParkingMapper parkingMapper;
@@ -31,6 +32,12 @@ public class ParkingController {
     @ApiOperation("Поиск парковки по id")
     public ParkingDto get(@PathVariable long id){
         return parkingMapper.mapParkingDto(parkingService.get(id).orElse(null));
+    }
+
+    @GetMapping("/building/{id}")
+    @ApiOperation("Поиск парковки по id объекта")
+    public ParkingDto getByBuildingId(@PathVariable Long id){
+        return parkingMapper.mapParkingDto(parkingService.getByBuildingId(id).orElse(null));
     }
 
     @PostMapping

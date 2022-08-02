@@ -22,16 +22,12 @@ public class MessageController {
 
     @GetMapping("/{devId}")
     @ApiOperation("Получение всех сообщений для датчика")
-    public List<MessageDto> showAll(@PathVariable long devId){
+    public List<MessageDto> showAll(@PathVariable(name="devId") Long devId){
         return messageService.findAll(devId).stream()
                 .map(messageMapper::mapMessageDto).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation("Поиск сообщения по id")
-    public MessageDto get(@PathVariable long id){
-        return messageMapper.mapMessageDto(messageService.get(id).orElse(null));
-    }
+
 
     @PostMapping
     @ApiOperation("Сохранение нового сообщения")

@@ -17,16 +17,14 @@ public class Building {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "obg_name")
+    @Column(name = "obj_name")
     private String name;
 
-    @Column(name = "desc")
+    @Column(name = "obj_desc")
     private String desc;
 
-    @ManyToOne
-    @JoinColumn(name = "org_id")
-    private Organization organization;
 
-    @OneToMany(mappedBy = "building")
-    private List<Parking> parking;
+    @Column(name = "org_id")
+    private Long orgId;
+
 }

@@ -20,7 +20,7 @@ public class JdbcReportMomentDaoImpl implements ReportMomentDao{
         try(Connection connection = getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("select t.dev_number, t.max_dt, t.status " +
                     "from(select d.dev_number, max(m.created_dt) over (partition by d.id) max_dt," +
-                    " m.status, m.created_dt from device d join message m on d.id = m.dev_id where d.zone_id ="
+                    " m.status, m.created_dt from wpz.device d join wpz.message m on d.id = m.dev_id where d.zone_id ="
                     + zoneId +") t where t.created_dt = t.max_dt");
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
