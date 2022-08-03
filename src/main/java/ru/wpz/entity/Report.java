@@ -1,5 +1,6 @@
 package ru.wpz.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,32 +10,38 @@ import java.util.UUID;
 @Entity
 @Table(schema = "wpz",name="report")
 @Data
+@Builder
 public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID id;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "org_id")
-    private Organization organizationId;
+    @Column(name = "organization_id")
+    private Long organizationId;
 
-    @ManyToOne
-    @JoinColumn(name = "obj_id")
-    private Building building;
+    @Column(name = "organization_name")
+    private String organizationName;
 
-    @ManyToOne
-    @JoinColumn(name = "zoneNumber")
-    private Parking zoneId;
+    @Column(name = "building_id")
+    private Long buildingId;
 
-    @ManyToOne
-    @JoinColumn(name = "dev_Id")
-    private Device device;
+    @Column(name = "building_name")
+    private String buildingName;
+
+    @Column(name = "zone_number")
+    private Integer zoneNumber;
+
+    @Column(name = "device_id")
+    private Long deviceId;
+
+    @Column(name = "device_number")
+    private Integer deviceNumber;
 
     @Column(name = "status")
     private Integer status;
 
-    @Column(name = "time_message")
-    private LocalDateTime timeMessage;
+    @Column(name = "message_dt")
+    private LocalDateTime messageDt;
 }

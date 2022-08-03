@@ -3,14 +3,12 @@ package ru.wpz.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.wpz.dto.DeviceFullInfoDto;
 import ru.wpz.dto.MessageDto;
-import ru.wpz.entity.Device;
 import ru.wpz.entity.Message;
 import ru.wpz.entity.Report;
 import ru.wpz.mapper.MessageMapper;
-import ru.wpz.repository.DeviceRepository;
-import ru.wpz.repository.MessageRepository;
-import ru.wpz.repository.ReportRepository;
+import ru.wpz.repository.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,23 +39,26 @@ public class MessageService {
         messageRepository.deleteById(id);
     }
 
+    @Transactional
     public void saveFromKafka(MessageDto messageDto) {
         Message message = save(messageMapper.mapMessage(messageDto));
-        Device device = deviceRepository.findById(message.getDevId().getId()).orElse(null);
-        if (device != null){
-           createReport(device, message);
-        }
+        createReport(message);
+
     }
 
-    //TODO: Пересмотреть логику данного метода => на вход должен быть один объект с полной информацией
-    private void createReport(Device device, Message message) {
-        Report report = new Report();
-        report.setTimeMessage(message.getCreatedDt());
-        report.setStatus(message.getStatus());
-        report.setDevice(device);
-        report.setZoneId(device.getZoneId());
-        report.setBuilding(device.getZoneId().getBuilding());
-        report.setOrganizationId(device.getZoneId().getBuilding().getOrganization());
+    private void createReport(Message message) {
+        DeviceFullInfoDto deviceFullInfoDto = deviceRepository.getDeviceFullInfo(message.getDevId());
+        Report report =  Report.builder()
+                .messageDt(message.getCreatedDt())
+                .status(message.getStatus())
+                .deviceId(deviceFullInfoDto.getDeviceId())
+                .deviceNumber(deviceFullInfoDto.getDeviceNumber())
+                .zoneNumber(deviceFullInfoDto.getZoneNumber())
+                .buildingId(deviceFullInfoDto.getBuildingId())
+                .buildingName(deviceFullInfoDto.getBuildingName())
+                .organizationId(deviceFullInfoDto.getOrganizationId())
+                .organizationName(deviceFullInfoDto.getOrganizationName())
+                .build();
         reportRepository.save(report);
     }
 }
