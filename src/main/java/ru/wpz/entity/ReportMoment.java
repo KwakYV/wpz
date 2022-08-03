@@ -1,25 +1,28 @@
 package ru.wpz.entity;
 
-import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
-@Entity
-@Table(name="report_day")
 @Data
-@Builder
+@Entity
+@SqlResultSetMapping(
+        name = "nativeSqlResult",
+        entities = @EntityResult(entityClass = ReportMoment.class)
+)
 public class ReportMoment {
 
-    @Column(name = "dev_number")
-    private Integer devNumber;
+    @Id
+    @Column(name = "total")
+    private Integer total;
 
-    @Column(name = "max_dt")
-    private LocalDateTime maxDt;
+    @Column(name = "busy_count")
+    private Integer busyCount;
 
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "free_count")
+    private Integer freeCount;
+
+    @Column(name = "percent")
+    private Integer percent;
+
 }
