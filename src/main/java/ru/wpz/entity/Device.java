@@ -3,6 +3,7 @@ package ru.wpz.entity;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import ru.wpz.dto.DeviceBusyDto;
+import ru.wpz.dto.DeviceFullInfoDto;
 import ru.wpz.dto.DeviceStatusDto;
 import ru.wpz.dto.ReportMomentDto;
 
@@ -97,6 +98,22 @@ import java.util.List;
                         "join result r2 on r2.device_id = r1.device_id and r2.status != r1.status\n" +
                         "where r1.status = 0",
                 resultSetMapping = "Mapping.DeviceBusyDto"
+        ),
+        @NamedNativeQuery(
+                name="Device.getDeviceFullInfo",
+                query="select o.id as organization_id,\n" +
+                        "       o.org_name as organization_name,\n" +
+                        "       b.id as building_id,\n" +
+                        "       b.obj_name as building_name,\n" +
+                        "       p.zone_number,\n" +
+                        "       d.id device_id,\n" +
+                        "       d.dev_number\n" +
+                        "from wpz.device d\n" +
+                        "join wpz.parking p on p.id = d.zone_id\n" +
+                        "join wpz.building b on p.obj_id = b.id\n" +
+                        "join wpz.organization o on o.id = b.org_id\n" +
+                        "where d.id = :devId",
+                resultSetMapping = "Mapping.DeviceFullInfoDto"
         )
 })
 @SqlResultSetMappings({
@@ -119,6 +136,16 @@ import java.util.List;
                 columns = {
                         @ColumnResult(name="device_id", type = Long.class),
                         @ColumnResult(name="busy_percent", type = Float.class)
+                })),
+        @SqlResultSetMapping(name="Mapping.DeviceFullInfoDto", classes = @ConstructorResult(targetClass = DeviceFullInfoDto.class,
+                columns = {
+                        @ColumnResult(name="organization_id", type = Long.class),
+                        @ColumnResult(name="organization_name", type = String.class),
+                        @ColumnResult(name="building_id", type = Long.class),
+                        @ColumnResult(name="building_name", type = String.class),
+                        @ColumnResult(name="zone_number", type = Integer.class),
+                        @ColumnResult(name="device_id", type = Long.class),
+                        @ColumnResult(name="dev_number", type = Integer.class)
                 }))
 })
 
