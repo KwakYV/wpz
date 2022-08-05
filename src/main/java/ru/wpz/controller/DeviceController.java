@@ -7,12 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.DeviceDto;
-import ru.wpz.entity.DeviceStatus;
+import ru.wpz.dto.DeviceStatusDto;
 import ru.wpz.mapper.DeviceMapper;
 import ru.wpz.service.DeviceService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/device")
@@ -26,7 +25,7 @@ public class DeviceController {
 
     @GetMapping("/zone/{zoneId}")
     @ApiOperation("Получение всех датчиков по зоне парковки")
-    public List<DeviceStatus> getDevicesWithLastStatus(@PathVariable(name="zoneId") Long zoneId){
+    public List<DeviceStatusDto> getDevicesWithLastStatus(@PathVariable(name="zoneId") Long zoneId){
         return deviceService.getAll(zoneId);
     }
 
@@ -42,17 +41,17 @@ public class DeviceController {
         deviceService.save(deviceMapper.mapDevice(device));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("")
     @ApiOperation("Обновление информации по  датчику")
-    public ResponseEntity<?> update(@RequestBody DeviceDto deviceDto, @PathVariable(name="id") Long deviceId){
-        deviceDto.setId(deviceId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestBody DeviceDto deviceDto){
         deviceService.save(deviceMapper.mapDevice(deviceDto));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Удаление датчика по id")
-    public void delete(@PathVariable(name="id") Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         deviceService.delete(id);
     }
 }
