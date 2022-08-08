@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.wpz.dto.DayReportDto;
+import ru.wpz.dto.DeviceBusyDto;
 import ru.wpz.dto.ReportMomentDto;
 import ru.wpz.dto.ReportPeriodDto;
 import ru.wpz.service.ReportService;
@@ -21,22 +22,22 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("/organization/{id}")
+    @GetMapping("/moment/building/{buildingId}")
     @ApiOperation("Получение отчетов занятых парковочных мест по объектам в данный момент")
-    public ReportMomentDto showDevOrg(@PathVariable long id) {
-        return reportService.findDevOrg(id);
+    public ReportMomentDto getReportAtMoment(@PathVariable Long buildingId) {
+        return reportService.calcDeviceBusyAtMoment(buildingId);
     }
 
 
-    @PostMapping("/organization/day")
-    @ApiOperation("Получение отчетов занятых парковочных мест по организациям в указанный день")
-    public List<DayReportDto> dayDevOrg(@RequestBody long id, @RequestBody LocalDateTime day) {
-        return reportService.findDayDevOrg(id, day);
+    @PostMapping("/day")
+    @ApiOperation("Получение отчетов занятых парковочных мест по объекту в указанный день")
+    public List<DeviceBusyDto> getReportByDay(@RequestBody Long buildingId, @RequestBody LocalDateTime day) {
+        return reportService.calcDeviceBusyByDay(buildingId, day);
     }
 
-    @PostMapping("/organization/period")
-    @ApiOperation("Получение отчетов занятых парковочных мест по организациям в указанный период времени")
-    public ReportPeriodDto periodDevOrg(@RequestBody long id, @RequestBody LocalDateTime start, @RequestBody LocalDateTime end) {
-        return reportService.findPeriod(id, start, end);
+    @PostMapping("/period")
+    @ApiOperation("Получение отчетов занятых парковочных мест по объекту в указанный период времени")
+    public List<DeviceBusyDto> getReportByPeriod(@RequestBody Long id, @RequestBody LocalDateTime start, @RequestBody LocalDateTime end) {
+        return reportService.calcDeviceBusyByPeriod(start, end, id);
     }
 }
