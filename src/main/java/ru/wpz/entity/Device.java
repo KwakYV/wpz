@@ -114,7 +114,17 @@ import java.util.List;
                         "join wpz.organization o on o.id = b.org_id\n" +
                         "where d.id = :devId",
                 resultSetMapping = "Mapping.DeviceFullInfoDto"
-        )
+        ),
+        @NamedNativeQuery(name = "Device.findDeviceStatusById",
+                query = "select t.id, t.dev_number, t.status, t.x_coord, t.y_coord\n" +
+                        "from (\n" +
+                        "         select d.id, d.dev_number, m.status, d.x_coord, d.y_coord, m.created_dt, max(m.created_dt) over (partition by d.id) as max_dt\n" +
+                        "         from wpz.device d\n" +
+                        "                  join wpz.message m on d.id = m.dev_id\n" +
+                        "         where d.id = :deviceId\n" +
+                        "         ) t\n" +
+                        "where t.max_dt = t.created_dt",
+                resultSetMapping = "Mapping.DeviceStatusDto")
 })
 @SqlResultSetMappings({
         @SqlResultSetMapping(name="Mapping.DeviceStatusDto", classes = @ConstructorResult(targetClass = DeviceStatusDto.class,

@@ -1,9 +1,11 @@
 package ru.wpz.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.wpz.dto.DeviceFullInfoDto;
+import ru.wpz.dto.DeviceStatusDto;
 import ru.wpz.dto.MessageDto;
 import ru.wpz.entity.Message;
 import ru.wpz.entity.Report;
@@ -40,9 +42,11 @@ public class MessageService {
     }
 
     @Transactional
-    public void saveFromKafka(MessageDto messageDto) {
+    @SendTo("/topic/deviceStatus")
+    public DeviceStatusDto saveFromKafka(MessageDto messageDto) {
         Message message = save(messageMapper.mapMessage(messageDto));
         createReport(message);
+        return deviceRepository.findDeviceStatusById(messageDto.getDevId());
 
     }
 
