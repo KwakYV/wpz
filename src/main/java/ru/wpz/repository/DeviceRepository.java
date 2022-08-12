@@ -29,4 +29,7 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
 
     @Query(nativeQuery = true)
     DeviceFullInfoDto getDeviceFullInfo(Long devId);
+
+    @Query(nativeQuery = true)
+    DeviceStatusDto findDeviceStatusById(Long deviceId);
 }

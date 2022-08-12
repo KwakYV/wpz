@@ -3,9 +3,13 @@ package ru.wpz.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
+import ru.wpz.dto.DeviceStatusDto;
 import ru.wpz.dto.MessageDto;
 import ru.wpz.mapper.MessageMapper;
+import ru.wpz.service.DeviceService;
 import ru.wpz.service.MessageService;
 
 import java.util.List;
@@ -19,6 +23,7 @@ public class MessageController {
 
     private final MessageMapper messageMapper;
     private final MessageService messageService;
+    private final DeviceService deviceService;
 
     @GetMapping("/{devId}")
     @ApiOperation("Получение всех сообщений для датчика")
@@ -39,6 +44,12 @@ public class MessageController {
     @ApiOperation("Удаление сообщения по id")
     public void delete(@PathVariable Long id) {
         messageService.delete(id);
+    }
+
+    @MessageMapping("/messages")
+    @SendTo("/topic/deviceStatus")
+    public DeviceStatusDto handleMessage(MessageDto messageDto){
+        return deviceService.findDeviceStatusById(messageDto.getDevId());
     }
 
 }

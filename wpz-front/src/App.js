@@ -1,6 +1,5 @@
 import React from "react";
 import OrganizationList from "./components/OrganizationComponent";
-
 import ObjectsTabs from "./components/ObjectsComponent";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
