@@ -32,4 +32,8 @@ public class DeviceService {
     public void delete(Long id) {
         deviceRepository.deleteById(id);
     }
+
+    public DeviceStatusDto findDeviceStatusById(Long deviceId) {
+        return deviceRepository.findDeviceStatusById(deviceId);
+    }
 }

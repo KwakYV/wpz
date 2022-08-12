@@ -31,10 +31,6 @@ const Rectangle = (props) => {
             }, 10000
         );
         return () => clearInterval(interval);
-        // function setUpdate() {
-        //     setRects(init_state);
-        // }
-        // setUpdate();
     });
 
 
